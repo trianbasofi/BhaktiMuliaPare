@@ -1,0 +1,33 @@
+function submitForm(event) {
+  var Nama = event.namedValues['Nama'][0];
+  var Email = event.namedValues['Alamat Email'][0];
+  var Jurusan = event.namedValues['Pilih Jurusan'][0];
+  var Whatsapp = event.namedValues['No. HP Peserta Didik'][0];
+
+  sendWhatsapp(Whatsapp, Nama, Email, Jurusan);
+}
+
+function sendWhatsapp(phone, name, email, jurusan) {
+  var url = "https://api.fonnte.com/send";
+  var message = "Assalamualaikum warahmatullahi wabarakatuh \n\n" +
+    "Nama Pendaftar : " + name + " \n" +
+    "Email Pendaftar : " + email + " \n" +
+    "Jurusan : " + jurusan + " \n" +
+    "Jangan lupa save nomor call center ya kak.\n\n" +
+    "*Data Anda telah kami terima* \n" +
+    "*PPDB SMK Bhakti Mulia Pare 2023/2024*";
+
+  var sendToUser = {
+    "method": "post",
+    "headers": {
+      "Authorization": "diIsidenganTokenFonnte"
+    },
+    "payload": {
+      "target": phone,
+      "message": message
+    }
+  };
+
+  var response = UrlFetchApp.fetch(url, sendToUser);
+  Logger.log(response.getContentText());
+}
